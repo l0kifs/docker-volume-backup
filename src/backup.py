@@ -7,14 +7,6 @@ from time import sleep
 
 from env_vars import EnvVars
 
-current_dir = path.dirname(path.abspath(__file__))
-logging_conf_file = path.join(current_dir, 'persistent_data', 'config', 'logging.conf')
-backups_dir = path.join(current_dir, 'persistent_data', 'backups')
-print(f'current_dir: {current_dir}\nlogging_conf_file: {logging_conf_file}\nbackups_dir: {backups_dir}')
-
-logging.config.fileConfig(logging_conf_file)
-log = logging.getLogger(__name__)
-
 
 def make_tarfile(output_filename, source_dir):
     try:
@@ -44,6 +36,14 @@ def rotate_backups(number_of_backups: int):
 
 
 if __name__ == "__main__":
+    current_dir = path.dirname(path.abspath(__file__))
+    logging_conf_file = path.join(current_dir, 'persistent_data', 'config', 'logging.conf')
+    backups_dir = path.join(current_dir, 'persistent_data', 'backups')
+    print(f'current_dir: {current_dir}\nlogging_conf_file: {logging_conf_file}\nbackups_dir: {backups_dir}')
+
+    logging.config.fileConfig(logging_conf_file)
+    log = logging.getLogger(__name__)
+
     log.info(f"Starting backups")
     while True:
         rotate_backups(EnvVars.backups_number())
