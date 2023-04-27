@@ -4,8 +4,9 @@ import os
 from datetime import datetime
 from os import path
 import tarfile
-from dataclasses import dataclass
 from time import sleep
+
+from env_vars import EnvVars
 
 current_dir = path.dirname(path.abspath(__file__))
 logging_conf_file = path.join(current_dir, 'persistent_data', 'config', 'logging.conf')
@@ -14,27 +15,6 @@ backups_dir = path.join(current_dir, 'persistent_data', 'backups')
 
 logging.config.fileConfig(logging_conf_file)
 log = logging.getLogger(__name__)
-
-
-def get_config():
-    @dataclass
-    class Config:
-        source_dir: str
-        number_of_backups: int
-        backup_interval: int
-
-    try:
-        parser = configparser.ConfigParser()
-        parser.read(config_ini_file)
-        config = Config(
-            source_dir=parser['Backup']['source_dir'],
-            number_of_backups=int(parser['Backup']['number_of_backups']),
-            backup_interval=int(parser['Backup']['backup_interval'])
-        )
-        return config
-    except Exception:
-        log.exception("Could not read config.ini", exc_info=True)
-        raise Exception("Could not read config.ini")
 
 
 def make_tarfile(output_filename, source_dir):
@@ -64,10 +44,8 @@ def rotate_backups(number_of_backups: int):
 
 
 if __name__ == "__main__":
-    config = get_config()
-
     while True:
-        rotate_backups(config.number_of_backups)
+        rotate_backups(EnvVars.backups_number())
         backup_name = f"backup_{datetime.utcnow().strftime('%Y-%m-%dT%H-%M-%S')}.tar.gz"
-        output_filename = make_tarfile(path.join(backups_dir, backup_name), config.source_dir)
-        sleep(config.backup_interval*60*60)
+        output_filename = make_tarfile(path.join(backups_dir, backup_name), EnvVars.source_dir())
+        sleep(EnvVars.backup_interval()*60*60)
