@@ -40,7 +40,7 @@ def get_config():
 def make_tarfile(output_filename, source_dir):
     try:
         with tarfile.open(output_filename, "w:gz") as tar:
-            tar.add(source_dir, arcname=os.path.basename(source_dir))
+            tar.add(source_dir)  # arcname=os.path.basename(source_dir)
         return output_filename
     except Exception:
         log.exception(f'Could not create tarfile "{output_filename}" from source "{source_dir}"', exc_info=True)

@@ -1,6 +1,6 @@
 FROM python:3.9-slim-buster
 
-LABEL name="DockerVolumeBackup"
+LABEL name="docker-volume-backup"
 LABEL version="1.0"
 
 WORKDIR /app
