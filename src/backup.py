@@ -21,6 +21,7 @@ def make_tarfile(output_filename, source_dir):
     try:
         with tarfile.open(output_filename, "w:gz") as tar:
             tar.add(source_dir)  # arcname=os.path.basename(source_dir)
+        log.info(f"Created backup file {output_filename}")
         return output_filename
     except Exception:
         log.exception(f'Could not create tarfile "{output_filename}" from source "{source_dir}"', exc_info=True)
@@ -44,6 +45,7 @@ def rotate_backups(number_of_backups: int):
 
 
 if __name__ == "__main__":
+    log.info(f"Starting backups")
     while True:
         rotate_backups(EnvVars.backups_number())
         backup_name = f"backup_{datetime.utcnow().strftime('%Y-%m-%dT%H-%M-%S')}.tar.gz"
