@@ -2,7 +2,7 @@
 ## Setup
 1. Clone repository
     ```bash
-   git clone https://github.com/l0kifs/docker-volume-backup.git
+   git clone --no-local https://github.com/l0kifs/docker-volume-backup.git
     ```
 2. Move to `src` directory
     ```bash
@@ -18,9 +18,10 @@
     ```bash
    docker run -d \
        --restart=unless-stopped \
+       --name=backup-service \
        --volumes-from <backup_container_name> \
        -v <destination_path>:/app/persistent_data \
-       -e SOURCE_DIR=/source/dir \
+       -e SOURCE_DIR=<backup_source_path> \
        -e BACKUP_INTERVAL=24 \
        -e BACKUPS_NUMBER=2 \
        backup-service

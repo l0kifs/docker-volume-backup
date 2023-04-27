@@ -9,8 +9,8 @@ from env_vars import EnvVars
 
 current_dir = path.dirname(path.abspath(__file__))
 logging_conf_file = path.join(current_dir, 'persistent_data', 'config', 'logging.conf')
-config_ini_file = path.join(current_dir, 'persistent_data', 'config', 'config.ini')
 backups_dir = path.join(current_dir, 'persistent_data', 'backups')
+print(f'current_dir: {current_dir}\nlogging_conf_file: {logging_conf_file}\nbackups_dir: {backups_dir}')
 
 logging.config.fileConfig(logging_conf_file)
 log = logging.getLogger(__name__)
