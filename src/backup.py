@@ -26,6 +26,7 @@ def rotate_backups(number_of_backups: int):
         files.sort(key=lambda x: datetime.strptime(x.replace('backup_', '').replace('.tar.gz', ''), "%Y-%m-%dT%H-%M-%S"))
 
         if len(files) >= number_of_backups:
+            # TODO check mathematics here
             files_to_remove = len(files)-number_of_backups+1
             for i in range(files_to_remove):
                 os.remove(os.path.join(backups_dir, files[i]))
